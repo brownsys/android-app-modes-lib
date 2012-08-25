@@ -48,11 +48,9 @@ public class Manager {
      */
     public boolean connectApplication() {
 
-        bindModeService();
-
         // If app is running for the first time, register its info and modes
         // to middleware
-        if (isFirstTimeRun()) {
+        if (bindModeService() && isFirstTimeRun()) {
 
             // Get supported modes from application
             List<ModeData> modes = null;
@@ -132,19 +130,24 @@ public class Manager {
     /**
      * Binds to application implementing mode service. Used by middleware.
      * 
+     * @return whether binding worked or not
      **/
-    private void bindModeService() {
+    private boolean bindModeService() {
+        boolean ret = true;
+
         if (modeConnection == null) {
             modeConnection = new ModeServiceConnection();
             Intent intent = new Intent();
             intent.setComponent(new ComponentName(packageName, packageName
                     + "." + Constants.MODE_PROXY_CLASS));
-            boolean ret = context.bindService(intent, modeConnection,
+            ret = context.bindService(intent, modeConnection,
                     Context.BIND_AUTO_CREATE);
             Log.d(TAG, "bindModeService() bound with " + ret);
         } else {
             Log.w(TAG, "Cannot bind to mode service - Service already bound");
         }
+
+        return ret;
     }
 
     /**
