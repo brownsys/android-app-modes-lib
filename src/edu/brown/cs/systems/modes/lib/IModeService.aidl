@@ -1,7 +1,7 @@
 package edu.brown.cs.systems.modes.lib;
 
 import java.util.List;
-import edu.brown.cs.systems.modes.data.ModeData;
+import edu.brown.cs.systems.modes.lib.data.ModeData;
 
 interface IModeService {
     /**

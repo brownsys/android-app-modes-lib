@@ -1,4 +1,4 @@
-package edu.brown.cs.systems.modes.data;
+package edu.brown.cs.systems.modes.lib.data;
 
 import android.os.Parcel;
 import android.os.Parcelable;

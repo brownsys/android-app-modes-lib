@@ -5,6 +5,6 @@
  * declares the class as Parcelable
  */
 
-package edu.brown.cs.systems.modes.data;
+package edu.brown.cs.systems.modes.lib.data;
 
 parcelable ModeData;

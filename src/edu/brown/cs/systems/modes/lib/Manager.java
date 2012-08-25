@@ -12,7 +12,7 @@ import android.os.Parcelable;
 import android.os.RemoteException;
 import android.util.Log;
 
-import edu.brown.cs.systems.modes.data.ModeData;
+import edu.brown.cs.systems.modes.lib.data.ModeData;
 
 /**
  * @author Marcelo Martins <martins@cs.brown.edu>
