@@ -110,7 +110,7 @@ public class Manager {
 
         SharedPreferences prefs = context.getSharedPreferences(
                 PREFERENCES_FILE, Context.MODE_PRIVATE);
-        return prefs.getBoolean("RegisteredModes", false);
+        return !prefs.getBoolean("RegisteredModes", false);
     }
 
     /**
