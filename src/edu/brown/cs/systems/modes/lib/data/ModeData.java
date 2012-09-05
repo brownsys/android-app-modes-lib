@@ -31,8 +31,9 @@ public class ModeData implements Parcelable {
          * Reconstruct from Parcel
          */
         Log.v(TAG, "AppModeMessage(Parcel source)");
-        id = source.readInt();
+        id = source.readLong();
         name = source.readString();
+        uid = source.readLong();
         description = source.readString();
     }
 
