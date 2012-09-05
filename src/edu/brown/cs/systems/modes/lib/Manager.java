@@ -1,5 +1,6 @@
 package edu.brown.cs.systems.modes.lib;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.ComponentName;
@@ -8,7 +9,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.IBinder;
-import android.os.Parcelable;
 import android.os.RemoteException;
 import android.util.Log;
 
@@ -50,42 +50,8 @@ public class Manager {
 
         // If app is running for the first time, register its info and modes
         // to middleware
-        if (bindModeService() && isFirstTimeRun()) {
-
-            // Get supported modes from application
-            List<ModeData> modes = null;
-            try {
-                modes = modeService.getModes();
-            } catch (RemoteException e) {
-                Log.e(TAG, "Couldn't get mones from application");
-                e.printStackTrace();
-                return false;
-            }
-
-            // Send to middleware basic info on app. Also, send its modes as
-            // intent's extra data.
-            Intent intent = new Intent();
-
-            intent.setComponent(new ComponentName(
-                    Constants.REGISTRY_PACKAGENAME,
-                    Constants.REGISTRY_CLASSNAME));
-            intent.setAction(Constants.ACTION_REGISTER_APP);
-            intent.putExtra("uid", uid);
-            intent.putExtra("name", appName);
-
-            // Here's the deal: in order to request info from an app, the
-            // middleware must send an intent. Implicit intents won't work,
-            // since all apps supporting the intent will respond and we want to
-            // communicate to a specific one. Explicit intents will work, but
-            // need to be told its package and class destination. We register
-            // them here so that the middleware can use them later.
-            intent.putExtra("packageName", packageName);
-            intent.putExtra("className", packageName + "."
-                    + Constants.MODE_PROXY_CLASS);
-            intent.putExtra("modes", (Parcelable[]) modes.toArray());
-
-            context.sendBroadcast(intent);
-            setFirstTimeRun(false);
+        if (isFirstTimeRun()) {
+            return bindModeService();
         }
 
         return true;
@@ -100,6 +66,48 @@ public class Manager {
 
         releaseModeService();
         return true;
+    }
+
+    /**
+     * Binding occurs asynchronously and bound-service methods cannot be called
+     * immediately. We can only use bound service after receiving a callback
+     * telling the connection has been established (onServiceConnected).
+     */
+    private void connectionCallback() {
+
+        // Get supported modes from application
+        List<ModeData> modes = null;
+        try {
+            modes = modeService.getModes();
+        } catch (RemoteException e) {
+            Log.e(TAG, "Couldn't get mones from application");
+            e.printStackTrace();
+        }
+
+        // Send to middleware basic info on app. Also, send its modes as
+        // intent's extra data.
+        Intent intent = new Intent();
+
+        intent.setComponent(new ComponentName(
+                Constants.REGISTRY_PACKAGENAME,
+                Constants.REGISTRY_CLASSNAME));
+        intent.setAction(Constants.ACTION_REGISTER_APP);
+        intent.putExtra("uid", uid);
+        intent.putExtra("name", appName);
+
+        // Here's the deal: in order to request info from an app, the
+        // middleware must send an intent. Implicit intents won't work,
+        // since all apps supporting the intent will respond and we want to
+        // communicate to a specific one. Explicit intents will work, but
+        // need to be told its package and class destination. We register
+        // them here so that the middleware can use them later.
+        intent.putExtra("packageName", packageName);
+        intent.putExtra("className", packageName + "."
+                + Constants.MODE_PROXY_CLASS);
+        intent.putParcelableArrayListExtra("modes", (ArrayList<ModeData>) modes);
+
+        context.sendBroadcast(intent);
+        setFirstTimeRun(false);
     }
 
     /**
@@ -133,9 +141,10 @@ public class Manager {
      * @return whether binding worked or not
      **/
     private boolean bindModeService() {
+
         boolean ret = true;
 
-        if (modeConnection == null) {
+        if (modeService == null) {
             modeConnection = new ModeServiceConnection();
             Intent intent = new Intent();
             intent.setComponent(new ComponentName(packageName, packageName
@@ -155,7 +164,9 @@ public class Manager {
      * 
      **/
     private void releaseModeService() {
-        if (modeConnection != null) {
+
+        if (modeService != null) {
+            modeService = null;
             context.unbindService(modeConnection);
             modeConnection = null;
             Log.d(TAG, "releaseModeService()");
@@ -171,12 +182,16 @@ public class Manager {
      * 
      */
     class ModeServiceConnection implements ServiceConnection {
+
         public void onServiceConnected(ComponentName name, IBinder boundService) {
+
             modeService = IModeService.Stub.asInterface((IBinder) boundService);
             Log.d(TAG, "onServiceConnected() connected");
+            connectionCallback();
         }
 
         public void onServiceDisconnected(ComponentName name) {
+
             modeService = null;
             Log.d(TAG, "onServiceDisconnected() disconnected");
         }
