@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
@@ -76,9 +77,9 @@ public class Manager {
     private void connectionCallback() {
 
         // Get supported modes from application
-        List<ModeData> modes = null;
+        ArrayList<ModeData> modes = null;
         try {
-            modes = modeService.getModes();
+            modes = (ArrayList<ModeData>) modeService.getModes();
         } catch (RemoteException e) {
             Log.e(TAG, "Couldn't get mones from application");
             e.printStackTrace();
@@ -104,7 +105,9 @@ public class Manager {
         intent.putExtra("packageName", packageName);
         intent.putExtra("className", packageName + "."
                 + Constants.MODE_PROXY_CLASS);
-        intent.putParcelableArrayListExtra("modes", (ArrayList<ModeData>) modes);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("modes", modes);
+        intent.putExtras(bundle);
 
         context.sendBroadcast(intent);
         setFirstTimeRun(false);
