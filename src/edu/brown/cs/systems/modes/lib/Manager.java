@@ -107,7 +107,7 @@ public class Manager {
         // need to be told its package and class destination. We register
         // them here so that the middleware can use them later.
         intent.putExtra("packageName", packageName);
-        intent.putExtra("className", packageName + "."
+        intent.putExtra("modeProxyClassName", packageName + "."
                 + Constants.MODE_PROXY_CLASS);
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList("modes", modes);
