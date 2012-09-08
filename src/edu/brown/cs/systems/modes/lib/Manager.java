@@ -113,7 +113,7 @@ public class Manager {
         bundle.putParcelableArrayList("modes", modes);
         intent.putExtras(bundle);
 
-        context.sendBroadcast(intent);
+        context.startService(intent);
         setFirstTimeRun(false);
     }
 
