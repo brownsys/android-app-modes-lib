@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -36,9 +38,11 @@ public class Manager {
 
         assert context != null;
         this.context = context;
-        uid = context.getApplicationInfo().uid;
+        ApplicationInfo ai = context.getApplicationInfo();
+        PackageManager pm = context.getPackageManager();
+        uid = ai.uid;
+        appName = (String) pm.getApplicationLabel(ai);
         packageName = context.getApplicationInfo().packageName;
-
     }
 
     /**
