@@ -16,4 +16,6 @@ public class Constants {
     public static final String ACTION_REGISTER_APP = "edu.brown.cs.systems.modes.intent.action.REGISTER_APP";
     public static final String ACTION_DROP_APP = "edu.brown.cs.systems.modes.intent.action.DROP_APP";
     public static final String ACTION_APPLY_MODE = "edu.brown.cs.systems.modes.intent.action.APPLY_MODE";
+
+    public static final int NO_MODE = -1;
 }
