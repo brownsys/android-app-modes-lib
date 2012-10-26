@@ -4,11 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-
 /**
  * Information on app modes
+ * 
  * @author Marcelo Martins <martins@cs.brown.edu>
- *
+ * 
  */
 public class ModeData implements Parcelable {
 
@@ -19,11 +19,15 @@ public class ModeData implements Parcelable {
     private int uid;
     private String description;
 
-    public ModeData(int id, String name, int uid, String description) {
-        this.id = id;
+    public ModeData(String name, String description) {
         this.name = name;
-        this.uid = uid;
         this.description = description;
+    }
+
+    public ModeData(int id, String name, int uid, String description) {
+        this(name, description);
+        this.id = id;
+        this.uid = uid;
     }
 
     public ModeData(Parcel source) {
@@ -89,6 +93,7 @@ public class ModeData implements Parcelable {
      * 
      */
     public static final Parcelable.Creator<ModeData> CREATOR = new Parcelable.Creator<ModeData>() {
+
         public ModeData createFromParcel(Parcel source) {
             return new ModeData(source);
         }

@@ -6,10 +6,10 @@ import edu.brown.cs.systems.modes.lib.data.ModeData;
 interface IModeService {
     /**
      * Set application mode
-     * @param modeId    mode ID
+     * @param modeName    mode name
      * @return true if everything went OK
      */
-    boolean setMode(long modeId);
+    boolean setMode(String modeName);
 
     /**
      * Get available modes
