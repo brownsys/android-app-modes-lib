@@ -14,12 +14,12 @@ public class ModeData implements Parcelable {
 
     static private final String TAG = "ModeData";
 
-    private long id;
+    private int id;
     private String name;
-    private long uid;
+    private int uid;
     private String description;
 
-    public ModeData(long id, String name, long uid, String description) {
+    public ModeData(int id, String name, int uid, String description) {
         this.id = id;
         this.name = name;
         this.uid = uid;
@@ -31,17 +31,17 @@ public class ModeData implements Parcelable {
          * Reconstruct from Parcel
          */
         Log.v(TAG, "AppModeMessage(Parcel source)");
-        id = source.readLong();
+        id = source.readInt();
         name = source.readString();
-        uid = source.readLong();
+        uid = source.readInt();
         description = source.readString();
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         assert id > 0;
         this.id = id;
     }
@@ -54,11 +54,11 @@ public class ModeData implements Parcelable {
         this.name = name;
     }
 
-    public long getUid() {
+    public int getUid() {
         return uid;
     }
 
-    public void setUid(long uid) {
+    public void setUid(int uid) {
         assert uid > 0;
         this.uid = uid;
     }
@@ -76,9 +76,9 @@ public class ModeData implements Parcelable {
     }
 
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(id);
+        dest.writeInt(id);
         dest.writeString(name);
-        dest.writeLong(uid);
+        dest.writeInt(uid);
         dest.writeString(description);
     }
 

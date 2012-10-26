@@ -14,15 +14,15 @@ public class AppData implements Parcelable {
 
     static private final String TAG = "AppData";
 
-    private long uid;
+    private int uid;
     private String name;
     private String packageName;
     private String modeProxyClassName;  // class name used for supporting mode
                                         // client
-    private long currentMode;           // current mode ID
+    private int currentMode;           // current mode ID
 
-    public AppData(long uid, String name, String packageName,
-            String modeProxyClassName, long currentMode) {
+    public AppData(int uid, String name, String packageName,
+            String modeProxyClassName, int currentMode) {
         this.uid = uid;
         this.name = name;
         this.packageName = packageName;
@@ -38,11 +38,11 @@ public class AppData implements Parcelable {
         uid = source.readInt();
     }
 
-    public long getUid() {
+    public int getUid() {
         return uid;
     }
 
-    public void setUid(long uid) {
+    public void setUid(int uid) {
         assert uid > 0;
         this.uid = uid;
     }
@@ -71,11 +71,11 @@ public class AppData implements Parcelable {
         this.modeProxyClassName = modeProxyClassName;
     }
 
-    public long getCurrentMode() {
+    public int getCurrentMode() {
         return currentMode;
     }
 
-    public void setCurrentMode(long mode) {
+    public void setCurrentMode(int mode) {
         assert mode > 0;
         currentMode = mode;
     }
@@ -85,11 +85,11 @@ public class AppData implements Parcelable {
     }
 
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeLong(uid);
+        dest.writeInt(uid);
         dest.writeString(name);
         dest.writeString(packageName);
         dest.writeString(modeProxyClassName);
-        dest.writeLong(currentMode);
+        dest.writeInt(currentMode);
     }
 
     /**
