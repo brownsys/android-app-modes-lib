@@ -52,14 +52,8 @@ public class Manager {
      * @return whether connection succeded or not
      */
     public boolean connectApplication() {
-
-        // If app is running for the first time, register its info and modes
-        // to middleware
-        if (isFirstTimeRun()) {
-            return bindModeService();
-        }
-
-        return true;
+        // Try to register app info and modes. Should fail gracefully.
+        return bindModeService();
     }
 
     /**
