@@ -21,7 +21,7 @@ import edu.brown.cs.systems.modes.lib.data.ModeData;
  * @author Marcelo Martins <martins@cs.brown.edu>
  * 
  */
-public class Manager {
+public class ModeManager {
 
     private static final String PREFERENCES_FILE = "AppModePreferences";
     private static final String TAG = "ModeManager";
@@ -34,7 +34,7 @@ public class Manager {
     private String appName;
     private String packageName;
 
-    public Manager(Context context) {
+    public ModeManager(Context context) {
 
         assert context != null;
         this.context = context;
@@ -83,6 +83,14 @@ public class Manager {
             e.printStackTrace();
         }
 
+        // Set up IDs for mode registration
+        for (int i = 0; i < modes.size(); i++) {
+        	ModeData data = modes.get(i);
+        	data.setId(i);
+        	data.setUid(uid);
+        	modes.set(i, data);
+        }
+
         // Send to middleware basic info on app. Also, send its modes as
         // intent's extra data.
         Intent intent = new Intent();
@@ -108,7 +116,7 @@ public class Manager {
         intent.putExtras(bundle);
 
         context.startService(intent);
-        setFirstTimeRun(false);
+        //setFirstTimeRun(false);
     }
 
     /**
