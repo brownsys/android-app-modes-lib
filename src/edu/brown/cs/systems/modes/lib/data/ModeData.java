@@ -17,6 +17,7 @@ public class ModeData implements Parcelable {
     private int id;
     private String name;
     private int uid;
+    private int power;
     private String description;
 
     public ModeData(String name, String description) {
@@ -24,9 +25,10 @@ public class ModeData implements Parcelable {
         this.description = description;
     }
 
-    public ModeData(int id, String name, int uid, String description) {
+    public ModeData(int id, String name, int uid, int power, String description) {
         this(name, description);
         this.id = id;
+        this.power = power;
         this.uid = uid;
     }
 
@@ -38,6 +40,7 @@ public class ModeData implements Parcelable {
         id = source.readInt();
         name = source.readString();
         uid = source.readInt();
+        power = source.readInt();
         description = source.readString();
     }
 
@@ -67,6 +70,15 @@ public class ModeData implements Parcelable {
         this.uid = uid;
     }
 
+    public int getPower() {
+        return power;
+    }
+
+    public void setPower(int power) {
+        assert power >= 0;
+        this.power = power;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -83,6 +95,7 @@ public class ModeData implements Parcelable {
         dest.writeInt(id);
         dest.writeString(name);
         dest.writeInt(uid);
+        dest.writeInt(power);
         dest.writeString(description);
     }
 
