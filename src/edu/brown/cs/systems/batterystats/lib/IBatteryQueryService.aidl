@@ -8,12 +8,12 @@ interface IBatteryQueryService {
      * Get battery remaining time (in seconds) from current running profile
      * @return
      */
-    int getBatteryRemainingTime();
+    long getBatteryRemainingTime();
 
     /**
      * Get batt remaining times (secs) given a power profile (mW)
      * @param appList
      * @return 
      */
-    int estimateRemainingTime(int powerProfile);
+    long estimateRemainingTime(int powerProfile);
 }
