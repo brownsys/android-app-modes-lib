@@ -86,7 +86,6 @@ public class ModeManager {
         // Set up IDs for mode registration
         for (int i = 0; i < modes.size(); i++) {
         	ModeData data = modes.get(i);
-        	data.setId(i);
         	data.setUid(uid);
         	modes.set(i, data);
         }
